@@ -1,0 +1,4 @@
+include ReadMe.md
+include ./DataFusionTools/visualisation/datafusiontools/visualisation/templates/example.html
+include ./DataFusionTools/visualisation/datafusiontools/visualisation/static/example.css
+include ./DataFusionTools/visualisation/datafusiontools/visualisation/static/example.js

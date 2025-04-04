@@ -1,0 +1,13 @@
+# Core dependencies
+-r requirements.txt
+
+# Testing tools
+pytest>=7.2
+pytest-cov>=4.0
+tox>=4.4
+mypy>=1.1
+libpysal>=4.8.0
+
+# Documentation
+Sphinx==6.2.1
+sphinx-rtd-theme==1.2.2

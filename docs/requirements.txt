@@ -1,0 +1,5 @@
+sphinx_mdinclude==0.5.3
+sphinx==4.5.0
+sphinx-book-theme==0.3.3
+sphinxcontrib-bibtex==2.5.0
+git+https://bitbucket.org/DeltaresGEO/datafusiontools/src/master/#egg=datafusiontools

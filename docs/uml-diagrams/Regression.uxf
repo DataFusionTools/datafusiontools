@@ -1,0 +1,144 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;50&lt;/x&gt;&lt;y&gt;440&lt;/y&gt;&lt;w&gt;130&lt;/w&gt;&lt;h&gt;150&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;Regression : Class
+--
+training_data = []
+target = []
+target_label = []
+accuracy = []
+encoder = []
+prediction = []
+model = []
+accuracy = []
+&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLPackage&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;40&lt;/x&gt;&lt;y&gt;410&lt;/y&gt;&lt;w&gt;160&lt;/w&gt;&lt;h&gt;200&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;SVM.py
+--
+bg=gray&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;20&lt;/x&gt;&lt;y&gt;20&lt;/y&gt;&lt;w&gt;100&lt;/w&gt;&lt;h&gt;30&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;SimpleClass&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLPackage&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;30&lt;/x&gt;&lt;y&gt;280&lt;/y&gt;&lt;w&gt;280&lt;/w&gt;&lt;h&gt;260&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;EmptyPackage
+--
+bg=orange&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLPackage&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;30&lt;/x&gt;&lt;y&gt;0&lt;/y&gt;&lt;w&gt;280&lt;/w&gt;&lt;h&gt;260&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;EmptyPackage
+--
+bg=orange&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLPackage&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;30&lt;/x&gt;&lt;y&gt;0&lt;/y&gt;&lt;w&gt;280&lt;/w&gt;&lt;h&gt;260&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;EmptyPackage
+--
+bg=orange&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;260&lt;/x&gt;&lt;y&gt;60&lt;/y&gt;&lt;w&gt;200&lt;/w&gt;&lt;h&gt;330&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;Convolutional: Class
+--
+Settings 
+length_filters: List[int] =[3]
+nb_filters: List[int] =[64]
+nb_hidden_layers:int = 1
+activation_fct: str ="sigmoid", 
+optimizer: str ="Adam", 
+loss:str ="mean_squared_error",
+epochs: int=500, 
+batch: int =32, 
+regularisation: int =0
+--
+Variables
+training_data = []
+target = []
+target_label = []
+history = []
+encoder_features = [] 
+encoder_target = []
+prediction = []
+model = []
+kl = []&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;30&lt;/x&gt;&lt;y&gt;70&lt;/y&gt;&lt;w&gt;200&lt;/w&gt;&lt;h&gt;330&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;MPL: Class
+--
+Settings 
+nb_hidden_layers:int = 1
+nb_neurons:int = 1
+activation_fct: str ="sigmoid", 
+optimizer: str ="Adam", 
+loss:str ="mean_squared_error",
+epochs: int=500, 
+batch: int =32, 
+regularisation: int =0
+--
+Variables
+training_data = []
+target = []
+target_label = []
+history = []
+encoder_features = [] 
+encoder_target = []
+prediction = []
+model = []
+kl = []&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;Space for diagram notes</help_text><element><id>UMLPackage</id><coordinates><x>41</x><y>27</y><w>440</w><h>380</h></coordinates><panel_attributes>neural_network.py
+--
+bg=gray
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>51</x><y>67</y><w>200</w><h>330</h></coordinates><panel_attributes>MPL: Class
+--
+Settings 
+nb_hidden_layers:int = 1
+nb_neurons:int = 1
+activation_fct: str ="sigmoid", 
+optimizer: str ="Adam", 
+loss:str ="mean_squared_error",
+epochs: int=500, 
+batch: int =32, 
+regularisation: int =0
+--
+Variables
+training_data = []
+target = []
+target_label = []
+history = []
+encoder_features = [] 
+encoder_target = []
+prediction = []
+model = []
+kl = []
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>261</x><y>67</y><w>200</w><h>330</h></coordinates><panel_attributes>Convolutional: Class
+--
+Settings 
+length_filters: List[int] =[3]
+nb_filters: List[int] =[64]
+nb_hidden_layers:int = 1
+activation_fct: str ="sigmoid", 
+optimizer: str ="Adam", 
+loss:str ="mean_squared_error",
+epochs: int=500, 
+batch: int =32, 
+regularisation: int =0
+--
+Variables
+training_data = []
+target = []
+target_label = []
+history = []
+encoder_features = [] 
+encoder_target = []
+prediction = []
+model = []
+kl = []
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>10</x><y>0</y><w>500</w><h>680</h></coordinates><panel_attributes>Regression
+--
+
+
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>40</x><y>410</y><w>160</w><h>230</h></coordinates><panel_attributes>SVM.py
+--
+bg=gray
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>50</x><y>440</y><w>130</w><h>150</h></coordinates><panel_attributes>Regression : Class
+--
+training_data = []
+target = []
+target_label = []
+accuracy = []
+encoder = []
+prediction = []
+model = []
+accuracy = []
+
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>210</x><y>410</y><w>160</w><h>230</h></coordinates><panel_attributes>RF.py
+--
+bg=gray
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>220</x><y>440</y><w>130</w><h>190</h></coordinates><panel_attributes>Regression : Class
+--
+training_data = []
+target = []
+target_label = []
+accuracy = []
+encoder = []
+prediction = []
+model = []
+accuracy = []
+
+n_estimator
+max_depth
+group=1</panel_attributes><additional_attributes></additional_attributes></element></diagram>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <dispatchDataResponse xmlns="http://www.broservices.nl/xsd/dscpt/1.1" xmlns:swe="http://www.opengis.net/swe/2.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:brocom="http://www.broservices.nl/xsd/brocommon/3.0" xmlns:cptcommon="http://www.broservices.nl/xsd/cptcommon/1.1" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:om="http://www.opengis.net/om/2.0" xmlns:sampling="http://www.opengis.net/sampling/2.0" xmlns:ns9="http://www.isotc211.org/2005/gco" xmlns:ns10="http://www.isotc211.org/2005/gmd">
+    <brocom:responseType>dispatch</brocom:responseType>
+    <brocom:requestReference>-</brocom:requestReference>
+    <brocom:dispatchTime>2022-08-26T09:46:19+02:00</brocom:dispatchTime>
+    <dispatchDocument>
+      <CPT_O gml:id="BRO_0007">
+        <brocom:broId>CPT000000137747</brocom:broId>
+        <brocom:deliveryAccountableParty>51640813</brocom:deliveryAccountableParty>
+        <brocom:qualityRegime>IMBRO/A</brocom:qualityRegime>
+        <deliveryContext codeSpace="urn:bro:cpt:DeliveryContext">archiefoverdracht</deliveryContext>
+        <surveyPurpose codeSpace="urn:bro:cpt:SurveyPurpose">onbekend</surveyPurpose>
+        <researchReportDate>
+          <brocom:date>2012-01-10</brocom:date>
+        </researchReportDate>
+        <cptStandard codeSpace="urn:bro:cpt:CPTStandard">NEN5140</cptStandard>
+        <additionalInvestigationPerformed>onbekend</additionalInvestigationPerformed>
+        <standardizedLocation>
+          <brocom:location srsName="urn:ogc:def:crs:EPSG::4258" gml:id="BRO_0001">
+            <gml:pos>51.527527170 4.084525910</gml:pos>
+          </brocom:location>
+          <brocom:coordinateTransformation codeSpace="urn:bro:CoordinateTransformation">RDNAPTRANS2008</brocom:coordinateTransformation>
+        </standardizedLocation>
+        <deliveredLocation>
+          <cptcommon:location srsName="urn:ogc:def:crs:EPSG::28992" gml:id="BRO_0002">
+            <gml:pos>64604.680 393978.900</gml:pos>
+          </cptcommon:location>
+          <cptcommon:horizontalPositioningDate>
+            <brocom:voidReason>onbekend</brocom:voidReason>
+          </cptcommon:horizontalPositioningDate>
+          <cptcommon:horizontalPositioningMethod codeSpace="urn:bro:cpt:HorizontalPositioningMethod">onbekend</cptcommon:horizontalPositioningMethod>
+        </deliveredLocation>
+        <deliveredVerticalPosition>
+          <cptcommon:localVerticalReferencePoint codeSpace="urn:bro:cpt:LocalVerticalReferencePoint">maaiveld</cptcommon:localVerticalReferencePoint>
+          <cptcommon:offset uom="m">1.830</cptcommon:offset>
+          <cptcommon:verticalDatum codeSpace="urn:bro:cpt:VerticalDatum">NAP</cptcommon:verticalDatum>
+          <cptcommon:verticalPositioningDate>
+            <brocom:voidReason>onbekend</brocom:voidReason>
+          </cptcommon:verticalPositioningDate>
+          <cptcommon:verticalPositioningMethod codeSpace="urn:bro:cpt:VerticalPositioningMethod">onbekend</cptcommon:verticalPositioningMethod>
+        </deliveredVerticalPosition>
+        <conePenetrometerSurvey gml:id="BRO_0006">
+          <sampling:sampledFeature xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+          <cptcommon:dissipationTestPerformed>nee</cptcommon:dissipationTestPerformed>
+          <cptcommon:finalProcessingDate>
+            <brocom:voidReason>onbekend</brocom:voidReason>
+          </cptcommon:finalProcessingDate>
+          <cptcommon:cptMethod codeSpace="urn:bro:cpt:CPTMethod">elektrisch</cptcommon:cptMethod>
+          <cptcommon:qualityClass codeSpace="urn:bro:cpt:QualityClass">klasse2</cptcommon:qualityClass>
+          <cptcommon:stopCriterion codeSpace="urn:bro:cpt:StopCriterion">einddiepte</cptcommon:stopCriterion>
+          <cptcommon:trajectory>
+            <cptcommon:predrilledDepth uom="m">0.00</cptcommon:predrilledDepth>
+            <cptcommon:finalDepth uom="m">1.000</cptcommon:finalDepth>
+          </cptcommon:trajectory>
+          <cptcommon:conePenetrometer>
+            <cptcommon:description>REO57/AT/CM</cptcommon:description>
+            <cptcommon:conePenetrometerType>F7.5CKE2HAW1/B-1701-2166</cptcommon:conePenetrometerType>
+            <cptcommon:coneSurfaceArea uom="mm2">1500</cptcommon:coneSurfaceArea>
+            <cptcommon:coneSurfaceQuotient uom="1">0.58</cptcommon:coneSurfaceQuotient>
+            <cptcommon:coneToFrictionSleeveDistance uom="mm">138</cptcommon:coneToFrictionSleeveDistance>
+            <cptcommon:frictionSleeveSurfaceArea uom="mm2">19956</cptcommon:frictionSleeveSurfaceArea>
+            <cptcommon:frictionSleeveSurfaceQuotient uom="1">1.0</cptcommon:frictionSleeveSurfaceQuotient>
+            <cptcommon:zeroLoadMeasurement>
+              <cptcommon:coneResistanceBefore uom="MPa">0.021</cptcommon:coneResistanceBefore>
+              <cptcommon:coneResistanceAfter uom="MPa">0.113</cptcommon:coneResistanceAfter>
+              <cptcommon:inclinationResultantBefore uom="deg">-1</cptcommon:inclinationResultantBefore>
+              <cptcommon:inclinationResultantAfter uom="deg">-1</cptcommon:inclinationResultantAfter>
+              <cptcommon:localFrictionBefore uom="MPa">-0.002</cptcommon:localFrictionBefore>
+              <cptcommon:localFrictionAfter uom="MPa">0.000</cptcommon:localFrictionAfter>
+              <cptcommon:porePressureU1Before uom="MPa">-0.003</cptcommon:porePressureU1Before>
+              <cptcommon:porePressureU1After uom="MPa">-0.003</cptcommon:porePressureU1After>
+            </cptcommon:zeroLoadMeasurement>
+          </cptcommon:conePenetrometer>
+          <cptcommon:conePenetrationTest gml:id="BRO_0005">
+            <om:phenomenonTime xlink:type="simple">
+              <gml:TimeInstant gml:id="BRO_0003">
+                <gml:timePosition>2011-10-07</gml:timePosition>
+              </gml:TimeInstant>
+            </om:phenomenonTime>
+            <om:resultTime xlink:type="simple">
+              <gml:TimeInstant gml:id="BRO_0004">
+                <gml:timePosition>2011-10-07</gml:timePosition>
+              </gml:TimeInstant>
+            </om:resultTime>
+            <om:procedure xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            <om:observedProperty xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            <om:featureOfInterest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+            <cptcommon:cptResult>
+              <swe:elementCount xlink:type="simple"/>
+              <swe:elementType name="ConePenetrationTestResultRecord" xlink:type="simple" xlink:href="http://www.broservices.nl/xsd/cptcommon/1.0/cpttestresult_record.xml"/>
+              <swe:encoding>
+                <swe:TextEncoding decimalSeparator="." tokenSeparator="," blockSeparator=";"/>
+              </swe:encoding>
+              <cptcommon:values>0.000,0.000,48.8,3.977,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-1,-1,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999;0.020,0.020,51.1,6.998,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-1,-2,-999999,-999999,-999999,-999999,-999999,-999999,0.002,-999999,-999999,-999999;0.040,0.040,53.3,7.722,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-1,-2,-999999,-999999,-999999,-999999,-999999,-999999,0.001,-999999,-999999,-999999;0.060,0.060,57.9,4.622,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-1,-2,-999999,-999999,-999999,-999999,-999999,-999999,0.000,-999999,-999999,-999999;0.080,0.080,63.8,3.521,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-2,-999999,-999999,-999999,-999999,-999999,-999999,0.000,-999999,-999999,-999999;0.100,0.100,69.8,2.419,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.014,-999999,-999999,0.000,-999999,-999999,0.2;0.120,0.120,71.2,2.306,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.016,-999999,-999999,0.000,-999999,-999999,0.6;0.140,0.140,72.6,2.424,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.017,-999999,-999999,0.000,-999999,-999999,0.7;0.160,0.160,73.9,2.904,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.020,-999999,-999999,0.000,-999999,-999999,0.8;0.180,0.180,75.2,3.314,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.024,-999999,-999999,0.000,-999999,-999999,0.8;0.200,0.200,76.4,3.790,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.026,-999999,-999999,0.001,-999999,-999999,0.7;0.220,0.220,77.8,4.470,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.030,-999999,-999999,0.001,-999999,-999999,0.7;0.240,0.240,79.2,5.149,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.032,-999999,-999999,0.002,-999999,-999999,0.7;0.260,0.260,80.4,5.715,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.036,-999999,-999999,0.003,-999999,-999999,0.6;0.280,0.280,81.6,5.970,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.038,-999999,-999999,0.004,-999999,-999999,0.6;0.300,0.300,83.0,6.664,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.044,-999999,-999999,0.004,-999999,-999999,0.7;0.320,0.320,84.2,7.181,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.041,-999999,-999999,0.005,-999999,-999999,0.6;0.340,0.340,85.5,7.515,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.044,-999999,-999999,0.005,-999999,-999999,0.6;0.360,0.360,86.7,8.012,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.047,-999999,-999999,0.005,-999999,-999999,0.6;0.380,0.380,88.9,8.151,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.052,-999999,-999999,0.006,-999999,-999999,0.6;0.400,0.400,90.4,8.727,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.059,-999999,-999999,0.007,-999999,-999999,0.7;0.420,0.420,91.3,9.560,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.067,-999999,-999999,0.008,-999999,-999999,0.8;0.440,0.440,92.1,9.894,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.076,-999999,-999999,0.008,-999999,-999999,0.8;0.460,0.460,93.0,9.865,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.086,-999999,-999999,0.008,-999999,-999999,0.8;0.480,0.480,93.9,9.719,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.089,-999999,-999999,0.009,-999999,-999999,0.8;0.500,0.500,94.8,9.644,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.090,-999999,-999999,0.009,-999999,-999999,0.9;0.520,0.520,95.8,10.198,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.092,-999999,-999999,0.009,-999999,-999999,0.9;0.540,0.540,96.6,10.995,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.092,-999999,-999999,0.012,-999999,-999999,0.9;0.560,0.560,97.4,12.117,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.093,-999999,-999999,0.017,-999999,-999999,0.8;0.580,0.580,98.4,13.691,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.095,-999999,-999999,0.021,-999999,-999999,0.7;0.600,0.600,99.3,15.119,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.096,-999999,-999999,0.024,-999999,-999999,0.7;0.620,0.620,100.2,16.415,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-3,-999999,-999999,-999999,0.097,-999999,-999999,0.025,-999999,-999999,0.6;0.640,0.640,102.3,17.623,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.099,-999999,-999999,0.026,-999999,-999999,0.6;0.660,0.660,106.3,18.516,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.101,-999999,-999999,0.027,-999999,-999999,0.5;0.680,0.680,110.3,19.410,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.107,-999999,-999999,0.028,-999999,-999999,0.6;0.700,0.700,114.3,20.303,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.113,-999999,-999999,0.029,-999999,-999999,0.6;0.720,0.720,118.3,21.197,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.120,-999999,-999999,0.030,-999999,-999999,0.6;0.740,0.740,119.5,22.228,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.127,-999999,-999999,0.031,-999999,-999999,0.6;0.760,0.760,120.5,23.397,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.129,-999999,-999999,0.031,-999999,-999999,0.5;0.780,0.780,121.3,24.505,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.129,-999999,-999999,0.031,-999999,-999999,0.5;0.800,0.800,122.2,25.515,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.129,-999999,-999999,0.032,-999999,-999999,0.5;0.820,0.820,123.2,26.386,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.129,-999999,-999999,0.032,-999999,-999999,0.5;0.840,0.840,126.9,26.922,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.139,-999999,-999999,0.031,-999999,-999999,0.5;0.860,0.860,135.8,26.996,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.162,-999999,-999999,0.029,-999999,-999999,0.6;0.880,0.880,144.8,27.069,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.176,-999999,-999999,0.027,-999999,-999999,0.6;0.900,0.900,153.7,27.143,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,0.190,-999999,-999999,0.025,-999999,-999999,0.7;0.920,0.920,161.9,27.239,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,-999999,-999999,-999999,0.023,-999999,-999999,-999999;0.940,0.940,163.1,27.486,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,-999999,-999999,-999999,0.023,-999999,-999999,-999999;0.960,0.960,164.3,27.630,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,-999999,-999999,-999999,0.024,-999999,-999999,-999999;0.980,0.980,165.5,27.736,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,-999999,-999999,-999999,0.024,-999999,-999999,-999999;1.000,1.000,166.6,27.712,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-999999,-2,-4,-999999,-999999,-999999,-999999,-999999,-999999,0.024,-999999,-999999,-999999;</cptcommon:values>
+            </cptcommon:cptResult>
+          </cptcommon:conePenetrationTest>
+          <cptcommon:procedure>
+            <cptcommon:interruptionProcessingPerformed>onbekend</cptcommon:interruptionProcessingPerformed>
+            <cptcommon:expertCorrectionPerformed>onbekend</cptcommon:expertCorrectionPerformed>
+            <cptcommon:signalProcessingPerformed>onbekend</cptcommon:signalProcessingPerformed>
+          </cptcommon:procedure>
+          <cptcommon:parameters>
+            <cptcommon:penetrationLength>ja</cptcommon:penetrationLength>
+            <cptcommon:depth>ja</cptcommon:depth>
+            <cptcommon:elapsedTime>ja</cptcommon:elapsedTime>
+            <cptcommon:coneResistance>ja</cptcommon:coneResistance>
+            <cptcommon:correctedConeResistance>nee</cptcommon:correctedConeResistance>
+            <cptcommon:netConeResistance>nee</cptcommon:netConeResistance>
+            <cptcommon:magneticFieldStrengthX>nee</cptcommon:magneticFieldStrengthX>
+            <cptcommon:magneticFieldStrengthY>nee</cptcommon:magneticFieldStrengthY>
+            <cptcommon:magneticFieldStrengthZ>nee</cptcommon:magneticFieldStrengthZ>
+            <cptcommon:magneticFieldStrengthTotal>nee</cptcommon:magneticFieldStrengthTotal>
+            <cptcommon:electricalConductivity>nee</cptcommon:electricalConductivity>
+            <cptcommon:inclinationEW>nee</cptcommon:inclinationEW>
+            <cptcommon:inclinationNS>nee</cptcommon:inclinationNS>
+            <cptcommon:inclinationX>ja</cptcommon:inclinationX>
+            <cptcommon:inclinationY>ja</cptcommon:inclinationY>
+            <cptcommon:inclinationResultant>nee</cptcommon:inclinationResultant>
+            <cptcommon:magneticInclination>nee</cptcommon:magneticInclination>
+            <cptcommon:magneticDeclination>nee</cptcommon:magneticDeclination>
+            <cptcommon:localFriction>ja</cptcommon:localFriction>
+            <cptcommon:poreRatio>nee</cptcommon:poreRatio>
+            <cptcommon:temperature>nee</cptcommon:temperature>
+            <cptcommon:porePressureU1>ja</cptcommon:porePressureU1>
+            <cptcommon:porePressureU2>nee</cptcommon:porePressureU2>
+            <cptcommon:porePressureU3>nee</cptcommon:porePressureU3>
+            <cptcommon:frictionRatio>ja</cptcommon:frictionRatio>
+          </cptcommon:parameters>
+        </conePenetrometerSurvey>
+        <registrationHistory>
+          <brocom:objectRegistrationTime>2020-06-22T11:05:37+02:00</brocom:objectRegistrationTime>
+          <brocom:registrationStatus codeSpace="urn:bro:RegistrationStatus">voltooid</brocom:registrationStatus>
+          <brocom:registrationCompletionTime>2020-06-22T11:05:37+02:00</brocom:registrationCompletionTime>
+          <brocom:corrected>nee</brocom:corrected>
+          <brocom:underReview>nee</brocom:underReview>
+          <brocom:deregistered>nee</brocom:deregistered>
+          <brocom:reregistered>nee</brocom:reregistered>
+        </registrationHistory>
+      </CPT_O>
+    </dispatchDocument>
+  </dispatchDataResponse>

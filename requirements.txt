@@ -1,0 +1,6 @@
+spatial_utils @ git+https://github.com/DataFusionTools/spatial_utils
+interpolation @ git+https://github.com/DataFusionTools/interpolation
+core @ git+https://github.com/DataFusionTools/core
+sensitivity @ git+https://github.com/DataFusionTools/sensitivity
+d_series_parser @ git+https://github.com/DataFusionTools/d_series_parser
+machine_learning @ git+https://github.com/DataFusionTools/machine_learning

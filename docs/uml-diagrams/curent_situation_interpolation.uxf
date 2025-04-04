@@ -1,0 +1,81 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;80&lt;/x&gt;&lt;y&gt;90&lt;/y&gt;&lt;w&gt;440&lt;/w&gt;&lt;h&gt;200&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;Class::InverseDistance
+--
+-tree = []  : KDtree with nearest neighbors
+-zn = []  : interpolation results
+-var = []  : interpolation variance
+-training_data = []  : training data
+-training_points = []  : training points
+-nb_near_points = 6  :number of k-nearest neighbours 
+-power = 1 : power of the inverse
+-tol = 1e-9 : tolerance added to the point distance to overcome division by zero
+--
+- interpolate()
+- predict()&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;80&lt;/x&gt;&lt;y&gt;470&lt;/y&gt;&lt;w&gt;440&lt;/w&gt;&lt;h&gt;130&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;Class::NaturalNeighbor
+--
+-tree = []  : KDtree with nearest neighbors
+-zn = []  : interpolation results
+-training_data = []  : training data
+-training_points = []  : training points
+--
+- interpolate()
+- predict()&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;80&lt;/x&gt;&lt;y&gt;300&lt;/y&gt;&lt;w&gt;440&lt;/w&gt;&lt;h&gt;130&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;Class::Nearest
+--
+-tree = []  : KDtree with nearest neighbors
+-zn = []  : interpolation results
+-training_data = []  : training data
+-training_points = []  : training points
+--
+- interpolate()
+- predict()&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLClass&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;80&lt;/x&gt;&lt;y&gt;90&lt;/y&gt;&lt;w&gt;440&lt;/w&gt;&lt;h&gt;200&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;Class::InverseDistance
+--
+-tree = []  : KDtree with nearest neighbors
+-zn = []  : interpolation results
+-var = []  : interpolation variance
+-training_data = []  : training data
+-training_points = []  : training points
+-nb_near_points = 6  :number of k-nearest neighbours 
+-power = 1 : power of the inverse
+-tol = 1e-9 : tolerance added to the point distance to overcome division by zero
+--
+- interpolate()
+- predict()&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>60</x><y>50</y><w>940</w><h>430</h></coordinates><panel_attributes>lw=2
+interpolation.py</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>80</x><y>90</y><w>440</w><h>200</h></coordinates><panel_attributes>Class::InverseDistance
+--
+-tree = []  : KDtree with nearest neighbors
+-zn = []  : interpolation results
+-var = []  : interpolation variance
+-training_data = []  : training data
+-training_points = []  : training points
+-nb_near_points = 6  :number of k-nearest neighbours 
+-power = 1 : power of the inverse
+-tol = 1e-9 : tolerance added to the point distance to overcome division by zero
+--
+- interpolate()
+- predict()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>80</x><y>320</y><w>440</w><h>130</h></coordinates><panel_attributes>Class::Nearest
+--
+-tree = []  : KDtree with nearest neighbors
+-zn = []  : interpolation results
+-training_data = []  : training data
+-training_points = []  : training points
+--
+- interpolate()
+- predict()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>530</x><y>320</y><w>440</w><h>130</h></coordinates><panel_attributes>Class::NaturalNeighbor
+--
+-tree = []  : KDtree with nearest neighbors
+-zn = []  : interpolation results
+-training_data = []  : training data
+-training_points = []  : training points
+--
+- interpolate()
+- predict()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>90</y><w>440</w><h>200</h></coordinates><panel_attributes>Class::Kriging
+--
+-interpolator = []  : interpolator for kriging
+-zn = []  : interpolation results
+-zn_depth = []  : interpolation results
+-training_data = []  : training data
+-training_points = []  : training points
+-training_depth = []  : depth of the interpolation results
+-restarts = 5  : restarts of the gaussian process
+--
+- interpolate()
+- predict()</panel_attributes><additional_attributes></additional_attributes></element></diagram>

@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Tutorial neural network &#8212; Data fusion tools 0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Data fusion tools 0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Tutorial neural network</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="tutorial-neural-network">
+<h1>Tutorial neural network<a class="headerlink" href="#tutorial-neural-network" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial uses sets of data to train a Neural Network (NN),
+to predict the IC value of a cpt.
+The first step of this process is to import all necessary package needed
+for setting up the model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datafusiontools._core.data_input</span> <span class="kn">import</span> <span class="n">Data</span><span class="p">,</span> <span class="n">Variable</span><span class="p">,</span> <span class="n">Geometry</span>
+<span class="kn">from</span> <span class="nn">datafusiontools._core.utils</span> <span class="kn">import</span> <span class="n">CreateInputsML</span>
+<span class="kn">from</span> <span class="nn">datafusiontools.machine_learning.mpl</span> <span class="kn">import</span> <span class="n">MPL</span>
+<span class="kn">import</span> <span class="nn">datafusiontools.machine_learning.enumeration_classes</span> <span class="k">as</span> <span class="nn">class_enums</span>
+
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">tests.utils</span> <span class="kn">import</span> <span class="n">TestUtils</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">from</span> <span class="nn">shapely</span> <span class="kn">import</span> <span class="n">geometry</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+</pre></div>
+</div>
+<p>The data were stored in a <a class="reference download internal" download="" href="../_downloads/87027ec74aae24e1703624747bb47900/test_case_DF.pickle"><code class="xref download docutils literal notranslate"><span class="pre">pickle</span></code></a> file.
+The pickle file can be opened as follows using python.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">input_files</span> <span class="o">=</span> <span class="s2">&quot;test_case_DF.pickle&quot;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_files</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">cpts</span><span class="p">,</span> <span class="n">resistivity</span><span class="p">,</span> <span class="n">insar</span><span class="p">)</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After unpacking the pickle file the topography can be plotted in x and y space.
+This can be done by using the following function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_topography</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpts</span><span class="p">,</span> <span class="n">resistivity</span><span class="p">,</span> <span class="n">insar</span><span class="p">):</span>
+    <span class="c1"># plot everything that is available</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">cpt</span> <span class="ow">in</span> <span class="n">cpts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cpt_point</span> <span class="o">=</span> <span class="n">cpt</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">cpt_point</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">cpt_point</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span>
+        <span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">resistivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="p">[</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+            <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">for</span> <span class="n">insar_value</span> <span class="ow">in</span> <span class="n">insar</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">insar_value</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="p">[</span><span class="n">insar_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+            <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;topography.png&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The following figure is produced. In the figure the blue points
+represent the positions of the cpts, the red point the
+positions of the resistivity and finally the green points
+represent the insar values</p>
+<img alt="../_images/topography.png" src="../_images/topography.png" />
+<section id="interpolating-data-to-produce-inputs-for-the-nn-model">
+<h2>Interpolating data to produce inputs for the NN model<a class="headerlink" href="#interpolating-data-to-produce-inputs-for-the-nn-model" title="Permalink to this headline">¶</a></h2>
+<p>At this point we have to start grouping and interpolating data to
+create a relevant input for the NN model. The first step is to
+find which of the data is relevant for each cpt. For that we will
+draw an imagined “buffer” zone around the cpt until sufficient
+data points are included in that buffer zone.</p>
+<p>Firstly we can group the resistivity data. The minimum amount of points
+choosen is 3. In the following figure the lookup process is schematized.</p>
+<img alt="../_images/lookup_resistivity_points.png" src="../_images/lookup_resistivity_points.png" />
+<p>The lookup function for the resistivity values is append bellow</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_cpt_resistivity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpt</span><span class="p">,</span> <span class="n">other_values</span><span class="p">,</span> <span class="n">minimum_points</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">cpt_point</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">cpt</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span>
+    <span class="c1"># define buffer lookup values</span>
+    <span class="n">lookup_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">points_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">points_counter</span> <span class="o">&lt;</span> <span class="n">minimum_points</span> <span class="ow">and</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lookup_distance</span><span class="p">):</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">lookup_distance</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="n">cpt_point</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+        <span class="n">contained</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">other_values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">attribute</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">buffer</span><span class="p">):</span>
+                <span class="n">contained</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">attribute</span>
+                <span class="n">points_counter</span> <span class="o">=</span> <span class="n">points_counter</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">contained</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+            <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">contained</span>
+</pre></div>
+</div>
+<p>In a similar manner the values of the  insar can be grouped as well.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_cpt_insar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpt</span><span class="p">,</span> <span class="n">other_values</span><span class="p">,</span> <span class="n">minimum_points</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">cpt_point</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">cpt</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span>
+    <span class="c1"># define buffer lookup values</span>
+    <span class="n">lookup_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">points_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">counter_loop</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">points_counter</span> <span class="o">&lt;</span> <span class="n">minimum_points</span> <span class="ow">and</span> <span class="n">counter_loop</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lookup_distance</span><span class="p">):</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">lookup_distance</span><span class="p">[</span><span class="n">counter_loop</span><span class="p">]</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="n">cpt_point</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+        <span class="n">contained</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">other_values</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">buffer</span><span class="p">):</span>
+                <span class="n">contained</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">other_values</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;displacement&quot;</span><span class="p">:</span> <span class="n">other_values</span><span class="p">[</span><span class="s2">&quot;displacement&quot;</span><span class="p">][</span><span class="n">counter</span><span class="p">],</span>
+                    <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="n">attribute</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">points_counter</span> <span class="o">=</span> <span class="n">points_counter</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">counter_loop</span> <span class="o">=</span> <span class="n">counter_loop</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">xy</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">contained</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+       <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+           <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+           <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+           <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;bo&quot;</span><span class="p">,</span>
+           <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+       <span class="p">)</span>
+</pre></div>
+</div>
+<p>This methods are used for each cpt point.
+Apart from that the points of the resistivity need to
+be interpolated for the points included in the cpt.
+This can be done by using the np.interp function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># group data</span>
+<span class="n">combined</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">cpt</span> <span class="ow">in</span> <span class="n">cpts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># interpolate resistivity values</span>
+    <span class="n">resistivity</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_cpt_resistivity</span><span class="p">(</span><span class="n">cpt</span><span class="p">,</span> <span class="n">resistivity</span><span class="p">))</span>
+    <span class="c1"># interpolate resistivity values</span>
+    <span class="k">for</span> <span class="n">name_res</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">resistivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">depth_points_resistivity</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]))</span>
+        <span class="n">resistivity_list</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;resistivity&quot;</span><span class="p">]</span>
+        <span class="n">target_depth_points</span> <span class="o">=</span> <span class="n">cpt</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span>
+        <span class="n">interpolated_resistivity</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">target_depth_point</span><span class="p">,</span> <span class="n">depth_points_resistivity</span><span class="p">,</span> <span class="n">resistivity_list</span><span class="p">)</span> <span class="k">for</span> <span class="n">target_depth_point</span> <span class="ow">in</span> <span class="n">target_depth_points</span><span class="p">]</span>
+        <span class="n">resistivity</span><span class="p">[</span><span class="n">name_res</span><span class="p">][</span><span class="s2">&quot;resistivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">interpolated_resistivity</span>
+        <span class="n">resistivity</span><span class="p">[</span><span class="n">name_res</span><span class="p">][</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_depth_points</span>
+    <span class="n">combined</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;resistivity&quot;</span><span class="p">:</span> <span class="n">resistivity</span><span class="p">,</span>
+        <span class="s2">&quot;insar&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cpt_insar</span><span class="p">(</span><span class="n">cpt</span><span class="p">,</span> <span class="n">insar</span><span class="p">),</span>
+    <span class="p">}</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After the points are combined then for the resistivity and insar.
+The data should be pre-processed.
+Resistivity should be averaged depending on the distance from the cpt point.
+This can be done using the following method. Note that the value returned is
+of type <a class="reference internal" href="../DataFusionTools.html#datafusiontools._core.data_input.Variable" title="datafusiontools._core.data_input.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">datafusiontools._core.data_input.Variable</span></code></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">preprocess_resistivity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resistivity</span><span class="p">,</span> <span class="n">cpt</span><span class="p">):</span>
+    <span class="n">sum_dist</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># get distance from cpt points</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">rs_item</span> <span class="ow">in</span> <span class="n">resistivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">resistivity</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">cpt</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
+            <span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">rs_item</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">sum_dist</span> <span class="o">=</span> <span class="n">sum_dist</span> <span class="o">+</span> <span class="n">resistivity</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
+        <span class="n">length_list</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rs_item</span><span class="p">[</span><span class="s2">&quot;resistivity&quot;</span><span class="p">])</span>
+    <span class="c1"># Get the average depending on the distance</span>
+    <span class="n">resistivity_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">length_list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">rs_item</span> <span class="ow">in</span> <span class="n">resistivity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">resistivity_sum</span> <span class="o">=</span> <span class="n">resistivity_sum</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rs_item</span><span class="p">[</span><span class="s2">&quot;resistivity&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">rs_item</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">sum_dist</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;resistivity&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">resistivity_sum</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the same manner the insar data should be pre-processed.
+However, instead of using the actual insar data as an input
+for the NN model, we can use the insar_rate as an input of
+the model. This can be done using the following method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_insar_average_depending_on_the_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">insar</span><span class="p">,</span> <span class="n">cpt</span><span class="p">):</span>
+     <span class="n">sum_dist</span> <span class="o">=</span> <span class="mi">0</span>
+     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">insar_item</span> <span class="ow">in</span> <span class="n">insar</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+         <span class="n">first_timestep</span> <span class="o">=</span> <span class="n">insar_item</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+         <span class="n">insar_item</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+             <span class="p">[</span>
+                 <span class="p">(</span><span class="n">timestamp</span> <span class="o">-</span> <span class="n">first_timestep</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+                 <span class="k">for</span> <span class="n">timestamp</span> <span class="ow">in</span> <span class="n">insar_item</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
+             <span class="p">]</span>
+         <span class="p">)</span>
+         <span class="n">insar</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">cpt</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
+             <span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="n">insar_item</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">])</span>
+         <span class="p">)</span>
+         <span class="n">sum_dist</span> <span class="o">=</span> <span class="n">sum_dist</span> <span class="o">+</span> <span class="n">insar</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
+         <span class="n">length_list</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">insar_item</span><span class="p">[</span><span class="s2">&quot;displacement&quot;</span><span class="p">])</span>
+     <span class="n">insar_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">length_list</span><span class="p">)</span>
+     <span class="n">time_average</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">length_list</span><span class="p">)</span>
+     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">insar_item</span> <span class="ow">in</span> <span class="n">insar</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+         <span class="n">insar_sum</span> <span class="o">=</span> <span class="n">insar_sum</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">insar_item</span><span class="p">[</span><span class="s2">&quot;displacement&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span>
+             <span class="n">insar_item</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">sum_dist</span>
+         <span class="p">)</span>
+         <span class="n">time_average</span> <span class="o">=</span> <span class="n">time_average</span> <span class="o">+</span> <span class="n">insar_item</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">insar</span><span class="p">))</span>
+     <span class="k">return</span> <span class="p">(</span><span class="n">time_average</span><span class="p">,</span> <span class="n">insar_sum</span><span class="p">)</span>
+
+ <span class="k">def</span> <span class="nf">preprocess_insar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">insar</span><span class="p">,</span> <span class="n">cpt</span><span class="p">):</span>
+     <span class="p">(</span><span class="n">time_average</span><span class="p">,</span> <span class="n">insar_sum</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_insar_average_depending_on_the_distance</span><span class="p">(</span>
+         <span class="n">insar</span><span class="p">,</span> <span class="n">cpt</span>
+     <span class="p">)</span>
+     <span class="c1"># do a polyfit to extract the features</span>
+     <span class="n">insar_fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">time_average</span><span class="p">,</span> <span class="n">insar_sum</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+     <span class="k">return</span> <span class="n">Data</span><span class="p">(</span>
+         <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="n">Variable</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;insar&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">insar_fit</span><span class="p">)],</span>
+         <span class="n">location</span><span class="o">=</span><span class="n">Geometry</span><span class="p">(</span>
+             <span class="n">x</span><span class="o">=</span><span class="n">insar</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">insar</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span>
+         <span class="p">),</span>
+         <span class="n">independent_variable</span><span class="o">=</span><span class="n">Variable</span><span class="p">(</span>
+             <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fake_idependent_variable&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">insar_fit</span>
+         <span class="p">),</span>
+     <span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, the data are generated by calling the methods defined above.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">resistivity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_resistivity</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;resistivity&quot;</span><span class="p">],</span> <span class="n">cpt</span><span class="p">)</span>
+<span class="n">insar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_insar</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;insar&quot;</span><span class="p">],</span> <span class="n">cpt</span><span class="p">)</span>
+<span class="n">data_cpts</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cpt&quot;</span><span class="p">:</span> <span class="n">Data</span><span class="p">(</span>
+        <span class="n">location</span><span class="o">=</span><span class="n">Geometry</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">cpt</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">cpt</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">),</span>
+        <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="n">tip</span><span class="p">,</span> <span class="n">IC</span><span class="p">,</span> <span class="n">lithology</span><span class="p">,</span> <span class="n">resistivity</span><span class="p">],</span>
+        <span class="n">independent_variable</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;insar_rate&quot;</span><span class="p">:</span> <span class="n">insar</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After that the features can be produced by initializing the class
+<a class="reference internal" href="../DataFusionTools.html#datafusiontools._core.utils.CreateInputsML" title="datafusiontools._core.utils.CreateInputsML"><code class="xref py py-class docutils literal notranslate"><span class="pre">datafusiontools._core.utils.CreateInputsML</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">create_features</span> <span class="o">=</span> <span class="n">CreateInputsML</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For each cpt of the database the features and targets of the training can be added.
+In this case the the inputs of the Neural Network are the resistivity, depth and the location.
+To achieve that the add_features method can be used.
+The input use_independent_variable is set to True, that will lead to the depth being used as an input.
+The input use_location_as_input is also set to True, that will lead to the location being used as an input.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">data_cpts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">create_features</span><span class="o">.</span><span class="n">add_features</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;cpt&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;resistivity&quot;</span><span class="p">],</span>
+        <span class="n">use_independent_variable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">use_location_as_input</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">create_features</span><span class="o">.</span><span class="n">add_targets</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;cpt&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;IC&quot;</span><span class="p">])</span>
+    <span class="n">create_features</span><span class="o">.</span><span class="n">add_features</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;insar_rate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;insar&quot;</span><span class="p">],</span> <span class="n">use_independent_variable</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">row_records_in_geometry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;cpt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+    <span class="n">column_records_in_geometry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;insar_rate&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+<span class="n">create_features</span><span class="o">.</span><span class="n">link_geometries</span><span class="p">(</span>
+    <span class="n">row_records_in_geometry</span><span class="o">=</span><span class="n">row_records_in_geometry</span><span class="p">,</span>
+    <span class="n">column_records_in_geometry</span><span class="o">=</span><span class="n">column_records_in_geometry</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The user can retrieve all features and targets by using the functions of the
+following code snippet. In this case the features and targets are flattened.
+This suggests that the input of the Neural Network will be per depth location.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">create_features</span><span class="o">.</span><span class="n">get_all_features</span><span class="p">(</span><span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">create_features</span><span class="o">.</span><span class="n">get_all_targets</span><span class="p">(</span><span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then the features and targets can be split into training and testing dataset.
+To do that the method <a class="reference internal" href="../DataFusionTools.html#datafusiontools._core.utils.CreateInputsML.split_train_test_data" title="datafusiontools._core.utils.CreateInputsML.split_train_test_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">datafusiontools._core.utils.CreateInputsML.split_train_test_data()</span></code></a>.
+In the following code snippet this procedure is shown.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">create_features</span><span class="o">.</span><span class="n">split_train_test_data</span><span class="p">()</span>
+<span class="n">training_data</span> <span class="o">=</span> <span class="n">create_features</span><span class="o">.</span><span class="n">get_features_train</span><span class="p">(</span><span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">target_data</span> <span class="o">=</span> <span class="n">create_features</span><span class="o">.</span><span class="n">get_targets_train</span><span class="p">(</span><span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">validation_training</span> <span class="o">=</span> <span class="n">create_features</span><span class="o">.</span><span class="n">get_features_test</span><span class="p">(</span><span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">validation_target</span> <span class="o">=</span> <span class="n">create_features</span><span class="o">.</span><span class="n">get_targets_test</span><span class="p">(</span><span class="n">flatten</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The user can also extract the feature names after defining all the testing and training data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">create_features</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this case the model used for training is a simple NN model.
+This can be initialized by using the <a class="reference internal" href="../datafusiontools.machine_learning.html#datafusiontools.machine_learning.mpl.MPL" title="datafusiontools.machine_learning.mpl.MPL"><code class="xref py py-class docutils literal notranslate"><span class="pre">datafusiontools.machine_learning.mpl.MPL</span></code></a> class.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nn</span> <span class="o">=</span> <span class="n">MPL</span><span class="p">(</span>
+    <span class="n">classification</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">nb_hidden_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">nb_neurons</span><span class="o">=</span><span class="p">[</span><span class="mi">28</span><span class="p">,</span> <span class="mi">14</span><span class="p">],</span>
+    <span class="n">activation_fct</span><span class="o">=</span><span class="n">class_enums</span><span class="o">.</span><span class="n">ActivationFunctions</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">class_enums</span><span class="o">.</span><span class="n">Optimizer</span><span class="o">.</span><span class="n">Adam</span><span class="p">,</span>
+    <span class="n">loss</span><span class="o">=</span><span class="n">class_enums</span><span class="o">.</span><span class="n">LossFunctions</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">batch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">regularisation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">feature_names</span><span class="o">=</span><span class="n">feature_names</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">nn</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
+    <span class="n">training_data</span><span class="p">,</span>
+    <span class="n">target_data</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s now evaluate the training of the data. The cost function can simply
+be plotted by using the <a class="reference internal" href="../datafusiontools.machine_learning.html#datafusiontools.machine_learning.neural_networks.NeuralNetwork.plot_cost_function" title="datafusiontools.machine_learning.neural_networks.NeuralNetwork.plot_cost_function"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_cost_function()</span></code></a>.</p>
+<img alt="../_images/performance.png" src="../_images/performance.png" />
+<p>Another way to look at the performance of the NN model is to plot the 1:1 plot
+using the testing data we reserved. This is implemented as a method in the
+DataFusionTools package. Note that the path is defined by using the pathlib package.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">validation_training</span><span class="p">)</span>
+<span class="n">nn</span><span class="o">.</span><span class="n">plot_fitted_line</span><span class="p">(</span>
+    <span class="n">validation_target</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;test_tutorial&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>In the plot bellow we can see how the model performed.</p>
+<img alt="../_images/comparison.png" src="../_images/comparison.png" />
+<p>Finally, we can also plot the IC vs the depth of the CPT, for that purpose the last 50 points can be plotted.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># extract last cpt data for testing</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">prediction</span><span class="p">[:</span><span class="mi">50</span><span class="p">],</span> <span class="n">validation_training</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">50</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">validation_target</span><span class="p">[:</span><span class="mi">50</span><span class="p">],</span> <span class="n">validation_training</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">50</span><span class="p">])</span>
+<span class="c1"># plot 1/1 line</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;IC&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;./tests/test_output/test_tutorial/comparison_depth.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the plot bellow we can see how the plot performed.</p>
+<img alt="../_images/comparison_depth.png" src="../_images/comparison_depth.png" />
+<p>To explain the contribution of each input to the output of the model,
+the user can use the SHAP (SHapley Additive exPlanation) value as a
+metric of the feature importance. The Shapley value is the average of
+the marginal contributions across all permutations. In this pythonmodule
+we use the <a class="reference external" href="https://shap.readthedocs.io/en/latest/index.html">shap python module</a> ,
+to produce feature importance graphs.</p>
+<p>To do that the user can use method <a class="reference internal" href="../datafusiontools.machine_learning.html#datafusiontools.machine_learning.neural_networks.NeuralNetwork.plot_feature_importance" title="datafusiontools.machine_learning.neural_networks.NeuralNetwork.plot_feature_importance"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_feature_importance()</span></code></a>.
+An example of how this function is called is show bellow.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nn</span><span class="o">.</span><span class="n">plot_feature_importance</span><span class="p">(</span>
+        <span class="n">validation_training</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./tests/test_output/test_tutorial_location&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>In the plot bellow we can see how the plot performed.</p>
+<img alt="../_images/feature_importance.png" src="../_images/feature_importance.png" />
+<p>The plot contains a lot of information.
+Firstly, negative and positive relationships with the target variable are shown in the figure.
+Each dot represent the one input in the neural network.</p>
+<ul class="simple">
+<li><p>Feature importance: Variables are ranked in descending order.</p></li>
+<li><p>Impact: The horizontal location shows whether the effect of that value is associated with a higher or lower prediction.</p></li>
+<li><p>Original value: Color shows whether that variable is high (in red) or low (in blue) for that observation.</p></li>
+<li><p>Correlation: A high level of the “depth” content has a high and negative impact on the quality rating. The “high” comes from the red color, and the negative impact is shown on the X-axis.</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tutorial neural network</a><ul>
+<li><a class="reference internal" href="#interpolating-data-to-produce-inputs-for-the-nn-model">Interpolating data to produce inputs for the NN model</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tutorials/tutorial_neural_network.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Data fusion tools 0.0 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Tutorial neural network</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Eleni Smyrniou.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+  </body>
+</html>
