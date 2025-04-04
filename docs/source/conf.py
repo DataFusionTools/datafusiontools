@@ -17,9 +17,6 @@ sys.path.insert(0, os.path.abspath("../../"))
 sys.path.insert(0, os.path.abspath("../"))
 sys.path.insert(0, os.path.abspath("."))
 
-
-import DataFusionTools as datafusiontools
-
 # -- Project information -----------------------------------------------------
 
 project = "Data fusion tools"

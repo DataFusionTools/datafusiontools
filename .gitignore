@@ -58,8 +58,8 @@ tests/test_output
 
 # Visualisation outputs
 DataFusionTools/visualisation/gocesiumtiler/tiles/*
-Notebooks/Visualisation Tutorial/data/las/
-Notebooks/Visualisation Tutorial/data/tiles/
+docs/notebooks/Visualisation Tutorial/data/las/
+docs/notebooks/Visualisation Tutorial/data/tiles/
 
 *.egg-info/
 build/
