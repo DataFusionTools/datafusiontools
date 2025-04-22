@@ -9,6 +9,7 @@ machine_learning @ git+https://github.com/DataFusionTools/machine_learning
 # Testing tools
 pytest>=7.2
 pytest-cov>=4.0
+codecov>=2.1.13
 tox>=4.4
 mypy>=1.1
 libpysal>=4.8.0
